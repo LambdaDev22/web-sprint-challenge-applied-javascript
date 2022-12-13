@@ -17,6 +17,30 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const articleCard = document.createElement('div');
+  const articleHeadline = document.createElement('div');
+  const articleAuthor = document.createElement('div');
+  const imgContainer = document.createElement('div');
+  const authorImg = document.createElement('img');
+  const articleAuthorName = document.createElement('span');
+
+  articleCard.classList.add('card');
+  articleHeadline.classList.add('headline');
+  articleAuthor.classList.add('author');
+  imgContainer.classList.add('img-container');
+
+  articleHeadline.textContent = article.headline;
+  authorImg.src = article.authorPhoto;
+  articleAuthorName.textContent = article.authorName;
+
+  articleCard.appendChild(articleHeadline);
+  articleCard.appendChild(articleAuthor);
+  articleAuthor.appendChild(imgContainer);
+  articleAuthor.appendChild(articleAuthorName);
+  imgContainer.appendChild(authorImg);
+
+  console.log(articleCard);
+  return articleCard;
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +52,30 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+axios.get('http://localhost:5001/api/articles')
+.then(res => {
+  console.log(res.data.articles);
+  for (let i = 0; i < res.data.articles.javascript.length; i++) {
+    document.querySelector(selector).appendChild(Card(res.data.articles.javascript[i]))
+  };
+  for (let i = 0; i < res.data.articles.bootstrap.length; i++) {
+    document.querySelector(selector).appendChild(Card(res.data.articles.bootstrap[i]))
+  };
+  for (let i = 0; i < res.data.articles.technology.length; i++) {
+    document.querySelector(selector).appendChild(Card(res.data.articles.technology[i]))
+  };
+  for (let i = 0; i < res.data.articles.jquery.length; i++) {
+    document.querySelector(selector).appendChild(Card(res.data.articles.jquery[i]))
+  };
+  for (let i = 0; i < res.data.articles.node.length; i++) {
+    document.querySelector(selector).appendChild(Card(res.data.articles.node[i]))
+  };
+})
+.catch(err => {
+  console.error(err);
+})
+
 }
 
 export { Card, cardAppender }
